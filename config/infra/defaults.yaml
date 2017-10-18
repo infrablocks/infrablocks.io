@@ -1,0 +1,8 @@
+---
+region: "eu-west-2"
+
+zone_domain_name: "infrablocks.io"
+
+storage_bucket_name: "infrablocks-website-storage"
+
+dns_zones_state_key: "dns-zones/deployment-state/default.tfstate"

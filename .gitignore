@@ -29,8 +29,8 @@ run/logs/
 
 # Terraform
 .terraform
-*.tfstate
-*.tfstate.backup
+/*.tfstate
+/*.tfstate.backup
 
 # Jekyll
 _site
