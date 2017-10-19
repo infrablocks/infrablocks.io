@@ -1,0 +1,20 @@
+---
+vars:
+  region: "%{hiera('region')}"
+
+  deployment_identifier: "%{hiera('deployment_identifier')}"
+
+  bucket_name: "%{hiera('website_bucket_name')}"
+  bucket_secret: "%{hiera('website_bucket_secret')}"
+
+  addresses: "%{hiera('addresses')}"
+
+  state_bucket: "%{hiera('storage_bucket_name')}"
+  dns_zones_state_key: "%{hiera('dns_zones_state_key')}"
+  dns_zones_state_encrypted: "true"
+
+backend_config:
+  bucket: "%{hiera('storage_bucket_name')}"
+  key: "%{hiera('website_state_key')}"
+  region: "%{hiera('region')}"
+  encrypt: "true"

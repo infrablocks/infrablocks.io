@@ -1,0 +1,5 @@
+---
+website_bucket_secret: ""
+
+addresses:
+  - "%{hiera('zone_domain_name')}"

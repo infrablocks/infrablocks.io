@@ -4,5 +4,7 @@ region: "eu-west-2"
 zone_domain_name: "infrablocks.io"
 
 storage_bucket_name: "infrablocks-website-storage"
+website_bucket_name: "infrablocks-website-content-%{hiera('deployment_identifier')}"
 
 dns_zones_state_key: "dns-zones/deployment-state/default.tfstate"
+website_state_key: "website/deployment-state/%{hiera('deployment_identifier')}.tfstate"
