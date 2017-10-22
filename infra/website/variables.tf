@@ -5,7 +5,9 @@ variable "deployment_identifier" {}
 variable "bucket_name" {}
 variable "bucket_secret" {}
 
-variable "addresses" {}
+variable "addresses" {
+  type = "list"
+}
 
 variable "certificate_domain_name" {}
 

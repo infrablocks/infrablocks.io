@@ -1,0 +1,9 @@
+title: "InfraBlocks"
+copyright_year: "2017"
+description: "Modular infrastructure components and libraries"
+
+google_analytics:
+  tracking_id: "UA-00000000-0"
+
+sass:
+  sass_dir: "_sass"

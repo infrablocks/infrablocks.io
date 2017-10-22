@@ -1,0 +1,8 @@
+---
+website_bucket_secret: ""
+
+certificate_domain_name: "infrablocks.io"
+
+addresses:
+  - "%{hiera('zone_domain_name')}"
+  - "www.%{hiera('zone_domain_name')}"

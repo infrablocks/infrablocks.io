@@ -1,5 +1,5 @@
 module "storage_bucket" {
-  source = "git@github.com:infrablocks/terraform-aws-encrypted-bucket.git?reg=0.1.4//src"
+  source = "git@github.com:infrablocks/terraform-aws-encrypted-bucket.git?ref=0.1.4//src"
 
   region = "${var.region}"
 

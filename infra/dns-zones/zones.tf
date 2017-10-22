@@ -3,7 +3,7 @@ data "aws_vpc" "default" {
 }
 
 module "dns_zones" {
-  source = "git@github.com:infrablocks/terraform-aws-dns-zones.git?reg=0.1.3//src"
+  source = "git@github.com:infrablocks/terraform-aws-dns-zones.git?ref=0.1.3//src"
 
   region = "${var.region}"
 
@@ -12,4 +12,22 @@ module "dns_zones" {
 
   private_zone_vpc_id = "${data.aws_vpc.default.id}"
   private_zone_vpc_region = "${var.region}"
+}
+
+resource "aws_route53_record" "zoho_verify_cname" {
+  name = "zb15086739.${var.domain_name}"
+  zone_id = "${module.dns_zones.public_zone_id}"
+  type = "CNAME"
+  ttl = "60"
+
+  records = ["zmverify.zoho.eu"]
+}
+
+resource "aws_route53_record" "zoho_verify_txt" {
+  name = "${var.domain_name}"
+  zone_id = "${module.dns_zones.public_zone_id}"
+  type = "TXT"
+  ttl = "60"
+
+  records = ["zoho-verification=zb15086739.zmverify.zoho.eu"]
 }

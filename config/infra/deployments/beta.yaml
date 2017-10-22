@@ -1,5 +1,7 @@
 ---
 website_bucket_secret: ""
 
+certificate_domain_name: "beta.infrablocks.io"
+
 addresses:
   - "beta.%{hiera('zone_domain_name')}"

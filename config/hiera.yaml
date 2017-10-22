@@ -1,0 +1,11 @@
+---
+:backends:
+  - "overrides"
+  - "env"
+  - "yaml"
+:yaml:
+  :datadir: "config/infra"
+:hierarchy:
+  - "roles/%{role}"
+  - "deployments/%{deployment}"
+  - "defaults"

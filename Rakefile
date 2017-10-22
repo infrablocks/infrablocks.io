@@ -8,9 +8,10 @@ RakeTerraform.define_installation_tasks(
     version: '0.10.6')
 
 task :default => [
+    :'content:build',
     :'bootstrap:plan',
     :'dns_zones:plan',
-    :'website:plan'
+    :'website:beta:plan'
 ]
 
 namespace :bootstrap do
@@ -69,7 +70,7 @@ namespace :website do
           .for_overrides(args)
           .for_scope(
               role: 'website',
-              environment: deployment_identifier)
+              deployment: deployment_identifier)
           .backend_config
     end
 
@@ -83,8 +84,44 @@ namespace :website do
           .for_overrides(args)
           .for_scope(
               role: 'website',
-              environment: deployment_identifier)
+              deployment: deployment_identifier)
           .vars
     end
+  end
+
+  namespace :beta do
+    task :plan do
+      Rake::Task['website:plan'].invoke('beta')
+    end
+    task :provision do
+      Rake::Task['website:provision'].invoke('beta')
+    end
+    task :destroy do
+      Rake::Task['website:destroy'].invoke('beta')
+    end
+  end
+
+  namespace :live do
+    task :plan do
+      Rake::Task['website:plan'].invoke('live')
+    end
+    task :provision do
+      Rake::Task['website:provision'].invoke('live')
+    end
+    task :destroy do
+      Rake::Task['website:destroy'].invoke('live')
+    end
+  end
+end
+
+namespace :content do
+  desc 'Local dev build of website to _site'
+  task :build do
+    sh 'jekyll build -s src'
+  end
+
+  desc 'Local dev build and serve on localhost:4000'
+  task :serve do
+    sh 'jekyll serve -s src'
   end
 end

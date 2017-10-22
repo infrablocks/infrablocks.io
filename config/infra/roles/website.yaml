@@ -9,6 +9,8 @@ vars:
 
   addresses: "%{hiera('addresses')}"
 
+  certificate_domain_name: "%{hiera('certificate_domain_name')}"
+
   state_bucket: "%{hiera('storage_bucket_name')}"
   dns_zones_state_key: "%{hiera('dns_zones_state_key')}"
   dns_zones_state_encrypted: "true"
