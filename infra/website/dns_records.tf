@@ -1,7 +1,7 @@
 resource "aws_route53_record" "public_website_cdn_alias" {
   count = "${length(var.addresses)}"
 
-  zone_id = "${data.terraform_remote_state.dns_zones.public_dns_zone_id}"
+  zone_id = "${data.terraform_remote_state.dns_zones.public_zone_id}"
   name = "${var.addresses[count.index]}"
   type = "A"
 
@@ -15,7 +15,7 @@ resource "aws_route53_record" "public_website_cdn_alias" {
 resource "aws_route53_record" "private_website_cdn_alias" {
   count = "${length(var.addresses)}"
 
-  zone_id = "${data.terraform_remote_state.dns_zones.private_dns_zone_id}"
+  zone_id = "${data.terraform_remote_state.dns_zones.private_zone_id}"
   name = "${var.addresses[count.index]}"
   type = "A"
 

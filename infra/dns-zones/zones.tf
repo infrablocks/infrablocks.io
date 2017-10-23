@@ -31,3 +31,16 @@ resource "aws_route53_record" "zoho_verify_txt" {
 
   records = ["zoho-verification=zb15086739.zmverify.zoho.eu"]
 }
+
+resource "aws_route53_record" "zoho_mail_mx" {
+  zone_id = "${module.dns_zones.public_zone_id}"
+  name = "${var.domain_name}"
+  type = "MX"
+  ttl = "3600"
+
+  records = [
+    "10 mx.zoho.eu.",
+    "20 mx2.zoho.eu.",
+    "50 mx3.zoho.eu."
+  ]
+}
