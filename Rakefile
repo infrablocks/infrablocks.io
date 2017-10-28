@@ -89,27 +89,11 @@ namespace :website do
     end
   end
 
-  namespace :beta do
-    task :plan do
-      Rake::Task['website:plan'].invoke('beta')
-    end
-    task :provision do
-      Rake::Task['website:provision'].invoke('beta')
-    end
-    task :destroy do
-      Rake::Task['website:destroy'].invoke('beta')
-    end
-  end
-
-  namespace :live do
-    task :plan do
-      Rake::Task['website:plan'].invoke('live')
-    end
-    task :provision do
-      Rake::Task['website:provision'].invoke('live')
-    end
-    task :destroy do
-      Rake::Task['website:destroy'].invoke('live')
+  [:beta, :live].each do |environment|
+    [:plan, :provision, :destroy].each do |action|
+      task action do
+        Rake::Task["website:#{action}"].invoke(environment)
+      end
     end
   end
 end
