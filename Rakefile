@@ -99,13 +99,18 @@ namespace :website do
 end
 
 namespace :content do
+  desc 'Fetch dependencies'
+  task :deps do
+    sh 'npm install'
+  end
+
   desc 'Local dev build of website to _site'
-  task :build do
+  task :build => [:deps] do
     sh 'jekyll build -s src'
   end
 
   desc 'Local dev build and serve on localhost:4000'
-  task :serve do
+  task :serve => [:deps] do
     sh 'jekyll serve -s src'
   end
 end

@@ -1,0 +1,9 @@
+{
+  "name": "infrablocks.io",
+  "description": "InfraBlocks Website and Documentation",
+  "version": "0.0.1",
+  "dependencies": {
+    "bourbon": "^4.3.4",
+    "normalize-scss": "^7.0.0"
+  }
+}
