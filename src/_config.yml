@@ -7,3 +7,6 @@ google_analytics:
 
 sass:
   sass_dir: "_sass"
+
+plugins:
+  - jekyll-tidy

@@ -8,3 +8,20 @@ website_bucket_name: "infrablocks-website-content-%{hiera('deployment_identifier
 
 dns_zones_state_key: "dns-zones/deployment-state/default.tfstate"
 website_state_key: "website/deployment-state/%{hiera('deployment_identifier')}.tfstate"
+
+content_work_directory: "build/content"
+
+non_standard_mime_types:
+  font/woff2:
+    - woff2
+
+max_ages:
+  image/jpeg: 300
+  image/png: 300
+  image/gif: 300
+  image/svg+xml: 300
+  text/html: 0
+  text/css: 300
+  application/javascript: 300
+  application/font-woff: 2592000
+  font/woff2: 2592000

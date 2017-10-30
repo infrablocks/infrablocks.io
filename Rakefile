@@ -1,7 +1,19 @@
 require 'confidante'
 require 'rake_terraform'
+require 'aws-sdk'
+require 'securerandom'
+require 'mime/types'
+
+require_relative 'lib/terraform_output'
+require_relative 'lib/s3_website'
 
 configuration = Confidante.configuration
+
+configuration.non_standard_mime_types.each do |mime_type, extensions|
+  MIME::Types.add(MIME::Type.new(mime_type) {|m|
+    m.extensions = extensions
+  })
+end
 
 RakeTerraform.define_installation_tasks(
     path: File.join(Dir.pwd, 'vendor', 'terraform'),
@@ -104,13 +116,66 @@ namespace :content do
     sh 'npm install'
   end
 
-  desc 'Local dev build of website to _site'
+  desc 'Build website locally'
   task :build => [:deps] do
-    sh 'jekyll build -s src'
+    sh "jekyll build -s src -d #{configuration.content_work_directory}"
   end
 
-  desc 'Local dev build and serve on localhost:4000'
+  desc 'Build and serve website on localhost:4000'
   task :serve => [:deps] do
-    sh 'jekyll serve -s src'
+    sh "jekyll serve -s src -d #{configuration.content_work_directory}"
+  end
+
+  desc 'Publish content for deployment identifier'
+  task :publish, [:deployment_identifier] => [:build] do |_, args|
+    configuration = configuration.for_overrides(args)
+
+    region = configuration.region
+    deployment_identifier = configuration.deployment_identifier
+    max_ages = configuration.max_ages
+    content_work_directory = configuration.content_work_directory
+    bucket = configuration
+                 .for_scope(
+                     role: 'website',
+                     deployment: deployment_identifier)
+                 .website_bucket_name
+
+    s3sync = S3Website.new(
+        region: region,
+        bucket: bucket,
+        max_ages: max_ages)
+
+    s3sync.publish_from(content_work_directory)
+  end
+
+  task :invalidate, [:deployment_identifier] do |_, args|
+    configuration = configuration.for_overrides(args)
+
+    region = configuration.region
+    deployment_identifier = configuration.deployment_identifier
+    backend_config = configuration
+                         .for_scope(
+                             role: 'website',
+                             deployment: deployment_identifier)
+                         .backend_config
+
+    distribution_id =
+        TerraformOutput.for(
+            name: 'cdn_id',
+            source_directory: 'infra/website',
+            work_directory: 'build',
+            backend_config: backend_config)
+
+    cloudfront = Aws::CloudFront::Client.new(region: region)
+
+    cloudfront.create_invalidation(
+        distribution_id: distribution_id,
+        invalidation_batch: {
+            caller_reference: SecureRandom.uuid,
+            paths: {
+                quantity: 1,
+                items: ['/*'],
+            }
+        })
   end
 end

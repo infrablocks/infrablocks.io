@@ -33,7 +33,6 @@ run/logs/
 /*.tfstate.backup
 
 # Jekyll
-_site
 .sass-cache
 .jekyll-metadata
 

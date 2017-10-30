@@ -4,8 +4,8 @@ resource "aws_cloudfront_distribution" "website_cdn" {
   http_version = "http1.1"
 
   origin {
-    origin_id   = "origin-bucket-${aws_s3_bucket.website_bucket.id}"
-    domain_name = "${aws_s3_bucket.website_bucket.website_endpoint}"
+    origin_id   = "origin-bucket-${aws_s3_bucket.bucket.id}"
+    domain_name = "${aws_s3_bucket.bucket.website_endpoint}"
 
     custom_origin_config {
       origin_protocol_policy = "http-only"
@@ -46,7 +46,7 @@ resource "aws_cloudfront_distribution" "website_cdn" {
     min_ttl          = "0"
     default_ttl      = "300"
     max_ttl          = "1200"
-    target_origin_id = "origin-bucket-${aws_s3_bucket.website_bucket.id}"
+    target_origin_id = "origin-bucket-${aws_s3_bucket.bucket.id}"
 
     viewer_protocol_policy = "redirect-to-https"
     compress               = true

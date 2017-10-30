@@ -1,4 +1,4 @@
-data "aws_iam_policy_document" "website_bucket_policy" {
+data "aws_iam_policy_document" "bucket_policy" {
   statement {
     sid = "PublicReadAccess"
 
@@ -21,10 +21,10 @@ data "aws_iam_policy_document" "website_bucket_policy" {
   }
 }
 
-resource "aws_s3_bucket" "website_bucket" {
+resource "aws_s3_bucket" "bucket" {
   bucket = "${var.bucket_name}"
 
-  policy = "${data.aws_iam_policy_document.website_bucket_policy.json}"
+  policy = "${data.aws_iam_policy_document.bucket_policy.json}"
 
   website {
     index_document = "index.html"
