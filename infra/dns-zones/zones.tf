@@ -14,33 +14,26 @@ module "dns_zones" {
   private_zone_vpc_region = "${var.region}"
 }
 
-resource "aws_route53_record" "zoho_verify_cname" {
-  name = "zb15086739.${var.domain_name}"
-  zone_id = "${module.dns_zones.public_zone_id}"
-  type = "CNAME"
-  ttl = "60"
-
-  records = ["zmverify.zoho.eu"]
-}
-
-resource "aws_route53_record" "zoho_verify_txt" {
-  name = "${var.domain_name}"
+resource "aws_route53_record" "gsuite_txt" {
+  name = "@"
   zone_id = "${module.dns_zones.public_zone_id}"
   type = "TXT"
   ttl = "60"
 
-  records = ["zoho-verification=zb15086739.zmverify.zoho.eu"]
+  records = ["google-site-verification=t3A9VSj05CawruipZrc7Q9hTi2CE3I7mUe8cGoDHssw"]
 }
 
-resource "aws_route53_record" "zoho_mail_mx" {
+resource "aws_route53_record" "gsuite_mx" {
   zone_id = "${module.dns_zones.public_zone_id}"
   name = "${var.domain_name}"
   type = "MX"
   ttl = "3600"
 
   records = [
-    "10 mx.zoho.eu.",
-    "20 mx2.zoho.eu.",
-    "50 mx3.zoho.eu."
+    "1 aspmx.l.google.com.",
+    "5 alt1.aspmx.l.google.com.",
+    "5 alt2.aspmx.l.google.com.",
+    "10 alt3.aspmx.l.google.com.",
+    "10 alt4.aspmx.l.google.com."
   ]
 }
