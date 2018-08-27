@@ -15,7 +15,7 @@ module "dns_zones" {
 }
 
 resource "aws_route53_record" "gsuite_txt" {
-  name = "@"
+  name = "${var.domain_name}"
   zone_id = "${module.dns_zones.public_zone_id}"
   type = "TXT"
   ttl = "60"
