@@ -9,15 +9,17 @@ require_relative 'lib/s3_website'
 
 configuration = Confidante.configuration
 
+puts configuration.non_standard_mime_types
+
 configuration.non_standard_mime_types.each do |mime_type, extensions|
-  MIME::Types.add(MIME::Type.new(mime_type) {|m|
+  MIME::Types.add(MIME::Type.new(mime_type.to_s) {|m|
     m.extensions = extensions
   })
 end
 
 RakeTerraform.define_installation_tasks(
     path: File.join(Dir.pwd, 'vendor', 'terraform'),
-    version: '0.10.6')
+    version: '0.12.17')
 
 task :default => [
     :'content:build',

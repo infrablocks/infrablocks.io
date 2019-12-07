@@ -15,16 +15,16 @@ data "aws_iam_policy_document" "bucket_policy" {
 
     condition {
       test = "StringEquals"
-      values = ["${var.bucket_secret}"]
+      values = [var.bucket_secret]
       variable = "aws:UserAgent"
     }
   }
 }
 
 resource "aws_s3_bucket" "bucket" {
-  bucket = "${var.bucket_name}"
+  bucket = var.bucket_name
 
-  policy = "${data.aws_iam_policy_document.bucket_policy.json}"
+  policy = data.aws_iam_policy_document.bucket_policy.json
 
   website {
     index_document = "index.html"
@@ -32,6 +32,6 @@ resource "aws_s3_bucket" "bucket" {
   }
 
   tags = {
-    DeploymentIdentifier = "${var.deployment_identifier}"
+    DeploymentIdentifier = var.deployment_identifier
   }
 }

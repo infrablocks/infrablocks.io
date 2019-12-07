@@ -3,29 +3,31 @@ data "aws_vpc" "default" {
 }
 
 module "dns_zones" {
-  source = "git@github.com:infrablocks/terraform-aws-dns-zones.git?ref=0.1.3//src"
+  source = "infrablocks/dns-zones/aws"
+  version = "0.5.0"
 
-  region = "${var.region}"
+  domain_name = var.domain_name
+  private_domain_name = var.domain_name
 
-  domain_name = "${var.domain_name}"
-  private_domain_name = "${var.domain_name}"
-
-  private_zone_vpc_id = "${data.aws_vpc.default.id}"
-  private_zone_vpc_region = "${var.region}"
+  private_zone_vpc_id = data.aws_vpc.default.id
+  private_zone_vpc_region = var.region
 }
 
 resource "aws_route53_record" "gsuite_txt" {
-  name = "${var.domain_name}"
-  zone_id = "${module.dns_zones.public_zone_id}"
+  name = var.domain_name
+  zone_id = module.dns_zones.public_zone_id
   type = "TXT"
   ttl = "60"
 
-  records = ["google-site-verification=t3A9VSj05CawruipZrc7Q9hTi2CE3I7mUe8cGoDHssw"]
+  records = [
+    "google-site-verification=t3A9VSj05CawruipZrc7Q9hTi2CE3I7mUe8cGoDHssw",
+    "v=spf1 include:_spf.google.com ~all"
+  ]
 }
 
 resource "aws_route53_record" "gsuite_mx" {
-  zone_id = "${module.dns_zones.public_zone_id}"
-  name = "${var.domain_name}"
+  zone_id = module.dns_zones.public_zone_id
+  name = var.domain_name
   type = "MX"
   ttl = "3600"
 

@@ -6,7 +6,7 @@ variable "bucket_name" {}
 variable "bucket_secret" {}
 
 variable "addresses" {
-  type = "list"
+  type = list(string)
 }
 
 variable "certificate_domain_name" {}

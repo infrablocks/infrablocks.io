@@ -1,11 +1,12 @@
 module "storage_bucket" {
-  source = "git@github.com:infrablocks/terraform-aws-encrypted-bucket.git?ref=0.1.4//src"
+  source = "infrablocks/encrypted-bucket/aws"
+  version = "1.0.0"
 
-  region = "${var.region}"
+  region = var.region
 
-  bucket_name = "${var.storage_bucket_name}"
+  bucket_name = var.storage_bucket_name
 
   tags = {
-    DeploymentIdentifier = "${var.deployment_identifier}"
+    DeploymentIdentifier = var.deployment_identifier
   }
 }

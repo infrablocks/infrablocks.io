@@ -5,7 +5,7 @@ resource "aws_cloudfront_distribution" "website_cdn" {
 
   origin {
     origin_id   = "origin-bucket-${aws_s3_bucket.bucket.id}"
-    domain_name = "${aws_s3_bucket.bucket.website_endpoint}"
+    domain_name = aws_s3_bucket.bucket.website_endpoint
 
     custom_origin_config {
       origin_protocol_policy = "http-only"
@@ -16,7 +16,7 @@ resource "aws_cloudfront_distribution" "website_cdn" {
 
     custom_header {
       name  = "User-Agent"
-      value = "${var.bucket_secret}"
+      value = var.bucket_secret
     }
   }
 
@@ -52,21 +52,21 @@ resource "aws_cloudfront_distribution" "website_cdn" {
     compress               = true
   }
 
-  "restrictions" {
-    "geo_restriction" {
+  restrictions {
+    geo_restriction {
       restriction_type = "none"
     }
   }
 
-  "viewer_certificate" {
-    acm_certificate_arn      = "${data.aws_acm_certificate.website.arn}"
+  viewer_certificate {
+    acm_certificate_arn      = data.aws_acm_certificate.website.arn
     ssl_support_method       = "sni-only"
     minimum_protocol_version = "TLSv1"
   }
 
-  aliases = "${var.addresses}"
+  aliases = var.addresses
 
-  tags {
-    DeploymentIdentifier = "${var.deployment_identifier}"
+  tags = {
+    DeploymentIdentifier = var.deployment_identifier
   }
 }
