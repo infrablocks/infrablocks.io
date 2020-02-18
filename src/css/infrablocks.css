@@ -1,0 +1,10 @@
+---
+---
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+
+#menu-state:checked ~ #menu {
+    display: block;
+}
+
+@tailwind utilities;

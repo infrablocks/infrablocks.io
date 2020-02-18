@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2000/svg" xmlns:xl="http://www.w3.org/1999/xlink" version="1.1" viewBox="-147 13 366 186" width="366" height="186">
+  <defs/>
+  <metadata> Produced by OmniGraffle 7.12.1 
+    <dc:date>2020-02-16 16:27:38 +0000</dc:date>
+  </metadata>
+  <g id="Icon" stroke-dasharray="none" fill="none" fill-opacity="1" stroke-opacity="1" stroke="none">
+    <title>Icon</title>
+    <g id="Icon: Layer 1">
+      <title>Layer 1</title>
+      <g id="Group_33">
+        <g id="Graphic_23">
+          <path d="M 36 15.5 L -54 51.5 L 36 87.5 L 126 51.5 Z" fill="white"/>
+          <path d="M 36 15.5 L -54 51.5 L 36 87.5 L 126 51.5 Z" stroke="#313333" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+        </g>
+        <g id="Graphic_24">
+          <path d="M 36.000003 87.5 L 36.000003 123.5 L 126 87.5 L 126 51.5 Z" fill="#ed1b23"/>
+          <path d="M 36.000003 87.5 L 36.000003 123.5 L 126 87.5 L 126 51.5 Z" stroke="#313333" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+        </g>
+        <g id="Graphic_25">
+          <path d="M -54 51.5 L -54 87.5 L 36 123.5 L 36.000003 87.5 Z" fill="#ee1a24"/>
+          <path d="M -54 51.5 L -54 87.5 L 36 123.5 L 36.000003 87.5 Z" stroke="#313333" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+        </g>
+        <g id="Graphic_27">
+          <path d="M -54 87.5 L -144 123.5 L -54 159.5 L 36.000003 123.5 Z" fill="white"/>
+          <path d="M -54 87.5 L -144 123.5 L -54 159.5 L 36.000003 123.5 Z" stroke="#313333" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+        </g>
+        <g id="Graphic_28">
+          <path d="M 36 123.5 L 126 159.5 L 216 123.5 L 126 87.5 Z" fill="white"/>
+          <path d="M 36 123.5 L 126 159.5 L 216 123.5 L 126 87.5 Z" stroke="#313333" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+        </g>
+        <g id="Graphic_29">
+          <path d="M 126 159.5 L 126 195.3 L 216 159.5 L 216 123.5 Z" fill="#f6931d"/>
+          <path d="M 126 159.5 L 126 195.3 L 216 159.5 L 216 123.5 Z" stroke="#313333" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+        </g>
+        <g id="Graphic_30">
+          <path d="M 36.000003 123.5 L 36.000003 159.5 L 126 195.5 L 126 159.5 Z" fill="#f6931d"/>
+          <path d="M 36.000003 123.5 L 36.000003 159.5 L 126 195.5 L 126 159.5 Z" stroke="#313333" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+        </g>
+        <g id="Graphic_31">
+          <path d="M 36 123.5 L -54 159.5 L -54 195.5 L 36.000003 159.5 Z" fill="#f15a23"/>
+          <path d="M 36 123.5 L -54 159.5 L -54 195.5 L 36.000003 159.5 Z" stroke="#313333" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+        </g>
+        <g id="Graphic_32">
+          <path d="M -144 123.5 L -144 159.5 L -54 195.5 L -54 159.5 Z" fill="#f15a23"/>
+          <path d="M -144 123.5 L -144 159.5 L -54 195.5 L -54 159.5 Z" stroke="#313333" stroke-linecap="round" stroke-linejoin="round" stroke-width="5"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,9 +1,17 @@
 {
   "name": "infrablocks.io",
   "description": "InfraBlocks Website and Documentation",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/infrablocks/infrablocks.io.git"
+  },
+  "license": "UNLICENSED",
   "version": "0.0.1",
-  "dependencies": {
-    "bourbon": "^4.3.4",
-    "normalize-scss": "^7.0.0"
+  "devDependencies": {
+    "autoprefixer": "^9.7.4",
+    "postcss-cli": "^7.1.0",
+    "postcss-import": "^12.0.1",
+    "purgecss": "^2.0.6",
+    "tailwindcss": "^1.2.0"
   }
 }

@@ -1,6 +1,7 @@
 title: "InfraBlocks"
-copyright_year: "2017"
+copyright_year: "2020"
 description: "Modular infrastructure components and libraries"
+author: "Toby Clemson"
 
 google_analytics:
   tracking_id: "UA-00000000-0"
@@ -8,5 +9,8 @@ google_analytics:
 sass:
   sass_dir: "_sass"
 
+markdown: "kramdown"
 plugins:
-  - jekyll-tidy
+  - "jekyll-postcss"
+  - "jekyll-purgecss"
+  - "jekyll-tidy"
