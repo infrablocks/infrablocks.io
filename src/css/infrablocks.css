@@ -3,12 +3,12 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 
-#menu-state:checked ~ #menu {
-    display: block;
+#menu-state:hover ~ #menu-icon > span {
+    @apply bg-gray-900;
 }
 
-#menu-state:hover ~ #menu-icon {
-    @apply text-gray-900 border-gray-900;
+#menu-state:checked ~ #menu {
+    display: block;
 }
 
 @tailwind utilities;
