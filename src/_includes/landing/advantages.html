@@ -1,24 +1,31 @@
-<section>
-    <div class="container mx-auto px-4 md:px-8 flex -mt-32">
-        {% include components/icon-card.html
-             title="Production Ready"
-             description="Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit. Autemdistinctio, ducimus ea eaque earum eos ex illo iste
-                molestiae, nam necessitatibus non odio sed sequi suscipit
-                tempore tenetur unde vitae."
-             margin="true" %}
-        {% include components/icon-card.html
-             title="Fully Tested"
-             description="Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit. Autemdistinctio, ducimus ea eaque earum eos ex illo iste
-                molestiae, nam necessitatibus non odio sed sequi suscipit
-                tempore tenetur unde vitae."
-             margin="true" %}
-        {% include components/icon-card.html
-             title="Highly Modular"
-             description="Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit. Autemdistinctio, ducimus ea eaque earum eos ex illo iste
-                molestiae, nam necessitatibus non odio sed sequi suscipit
-                tempore tenetur unde vitae." %}
+<section class="bg-gray-300">
+    <div class="container mx-auto px-4 py-6 md:px-8">
+        <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:gap-8 lg:grid-cols-3 -mt-32">
+            {% include components/icon-card.html
+                 title="Production Ready"
+                 description="Lorem ipsum dolor sit amet, consectetur adipisicing
+                    elit. Autemdistinctio, ducimus ea eaque earum eos ex illo iste
+                    molestiae, nam necessitatibus non odio sed sequi suscipit
+                    tempore tenetur unde vitae." %}
+            {% include components/icon-card.html
+                 title="Open Source"
+                 description="Lorem ipsum dolor sit amet, consectetur adipisicing
+                    elit. Autemdistinctio, ducimus ea eaque earum eos ex illo iste
+                    molestiae, nam necessitatibus non odio sed sequi suscipit
+                    tempore tenetur unde vitae." %}
+            {% include components/icon-card.html
+                 title="Highly Modular"
+                 description="Lorem ipsum dolor sit amet, consectetur adipisicing
+                    elit. Autemdistinctio, ducimus ea eaque earum eos ex illo iste
+                    molestiae, nam necessitatibus non odio sed sequi suscipit
+                    tempore tenetur unde vitae." %}
+            {% include components/icon-card.html
+                 title="Fully Tested"
+                 description="Lorem ipsum dolor sit amet, consectetur adipisicing
+                    elit. Autemdistinctio, ducimus ea eaque earum eos ex illo iste
+                    molestiae, nam necessitatibus non odio sed sequi suscipit
+                    tempore tenetur unde vitae."
+                 class="hidden md:flex lg:hidden"%}
+        </div>
     </div>
 </section>
