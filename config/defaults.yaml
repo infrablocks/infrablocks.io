@@ -1,10 +1,15 @@
 ---
 region: "eu-west-2"
 
-zone_domain_name: "infrablocks.io"
+development_group: "ifbk"
 
-storage_bucket_name: "infrablocks-website-storage"
-website_bucket_name: "infrablocks-website-content-%{hiera('deployment_identifier')}"
+component: "website"
+deployment_identifier: "%{deployment_group}-%{deployment_type}-%{deployment_label}"
+
+storage_bucket_name: "%{hiera('development_group')}-%{hiera('component')}-%{hiera('deployment_identifier')}-storage"
+website_bucket_name: "%{hiera('development_group')}-%{hiera('component')}-%{hiera('deployment_identifier')}-content"
+
+zone_domain_name: "infrablocks.io"
 
 dns_zones_state_key: "dns-zones/deployment-state/default.tfstate"
 website_state_key: "website/deployment-state/%{hiera('deployment_identifier')}.tfstate"

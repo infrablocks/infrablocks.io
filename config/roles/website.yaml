@@ -16,7 +16,7 @@ vars:
   dns_zones_state_encrypted: "true"
 
 backend_config:
-  bucket: "%{hiera('storage_bucket_name')}"
+  bucket: "%{hiera('website_state_bucket_name')}"
   key: "%{hiera('website_state_key')}"
-  region: "%{hiera('region')}"
-  encrypt: "true"
+  region: "%{hiera('website_state_bucket_region')}"
+  encrypt: "%{hiera('website_state_bucket_is_encrypted')}"

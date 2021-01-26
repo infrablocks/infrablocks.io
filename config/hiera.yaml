@@ -5,8 +5,8 @@
   - "yaml"
 :logger: "noop"
 :yaml:
-  :datadir: "config/infra"
+  :datadir: "config"
 :hierarchy:
   - "roles/%{role}"
-  - "deployments/%{deployment}"
+  - "deployments/%{deployment_group}-%{deployment_type}-%{deployment_label}"
   - "defaults"

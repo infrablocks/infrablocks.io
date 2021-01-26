@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 
 gem "rake", "~> 13.0"
-gem "rake_terraform", "~> 1.9"
-gem "confidante", "~> 0.21"
-gem "jekyll", "~> 4.1"
+gem "rake_terraform", "~> 1.13"
+gem "confidante", "~> 0.27"
+gem "jekyll", "~> 4.2"
 gem "aws-sdk", "~> 3.0"
 gem "mime-types", "~> 3.3"
 

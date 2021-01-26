@@ -4,7 +4,6 @@ require 'aws-sdk'
 require 'securerandom'
 require 'mime/types'
 
-require_relative 'lib/terraform_output'
 require_relative 'lib/s3_website'
 
 configuration = Confidante.configuration
@@ -17,7 +16,7 @@ end
 
 RakeTerraform.define_installation_tasks(
     path: File.join(Dir.pwd, 'vendor', 'terraform'),
-    version: '0.12.17')
+    version: '0.14.5')
 
 task :default => [
     :'content:build',
@@ -28,59 +27,45 @@ task :default => [
 
 namespace :bootstrap do
   RakeTerraform.define_command_tasks(
-      configuration_name: 'bootstrap'
+      configuration_name: 'bootstrap',
+      argument_names: [
+          :deployment_group,
+          :deployment_type,
+          :deployment_label
+      ]
   ) do |t|
-    deployment_configuration = configuration.for_scope(role: 'bootstrap')
+    configuration = configuration
+        .for_scope(args.to_h.merge(role: 'bootstrap'))
+
+    vars = configuration.vars
+    deployment_identifier = configuration.deployment_identifier
 
     t.source_directory = 'infra/bootstrap'
     t.work_directory = 'build'
 
-    t.state_file = File.join(Dir.pwd, "state/bootstrap/default.tfstate")
-    t.vars = deployment_configuration.vars
-  end
-end
-
-namespace :dns_zones do
-  RakeTerraform.define_command_tasks(
-      configuration_name: 'dns-zones'
-  ) do |t|
-    deployment_configuration = configuration.for_scope(role: 'dns-zones')
-
-    t.source_directory = 'infra/dns-zones'
-    t.work_directory = 'build'
-
-    t.backend_config = deployment_configuration.backend_config
-    t.vars = deployment_configuration.vars
+    t.state_file = File.join(
+        Dir.pwd, "state/bootstrap/#{deployment_identifier}.tfstate")
+    t.vars = vars
   end
 end
 
 namespace :website do
   RakeTerraform.define_command_tasks(
       configuration_name: 'website',
-      argument_names: [:deployment_identifier]
+      argument_names: [
+          :deployment_group,
+          :deployment_type,
+          :deployment_label
+      ]
   ) do |t, args|
-    runtime_configuration = configuration.for_overrides(args)
-    deployment_identifier = runtime_configuration.deployment_identifier
-    deployment_configuration = runtime_configuration
-        .for_scope(
-            role: 'website',
-            deployment: deployment_identifier)
+    configuration = configuration
+        .for_scope(args.to_h.merge(role: 'website'))
 
     t.source_directory = 'infra/website'
     t.work_directory = 'build'
 
-    t.backend_config = deployment_configuration.backend_config
-    t.vars = deployment_configuration.vars
-  end
-
-  [:beta, :live].each do |environment|
-    namespace environment do
-      [:plan, :provision, :destroy].each do |action|
-        task action do
-          Rake::Task["website:#{action}"].invoke(environment)
-        end
-      end
-    end
+    t.backend_config = configuration.backend_config
+    t.vars = configuration.vars
   end
 end
 
@@ -101,18 +86,18 @@ namespace :content do
   end
 
   desc 'Publish content for deployment identifier'
-  task :publish, [:deployment_identifier] => [:build] do |_, args|
-    runtime_configuration = configuration.for_overrides(args)
-    deployment_identifier = runtime_configuration.deployment_identifier
-    deployment_configuration = runtime_configuration
-        .for_scope(
-            role: 'website',
-            deployment: deployment_identifier)
+  task :publish, [
+      :deployment_group,
+      :deployment_type,
+      :deployment_label
+  ] => [:build] do |_, args|
+    configuration = configuration
+        .for_scope(args.to_h.merge(role: 'website'))
 
-    region = deployment_configuration.region
-    max_ages = deployment_configuration.max_ages
-    content_work_directory = deployment_configuration.content_work_directory
-    bucket = deployment_configuration.website_bucket_name
+    region = configuration.region
+    max_ages = configuration.max_ages
+    content_work_directory = configuration.content_work_directory
+    bucket = configuration.website_bucket_name
 
     s3sync = S3Website.new(
         region: region,
@@ -122,18 +107,18 @@ namespace :content do
     s3sync.publish_from(content_work_directory)
   end
 
-  task :invalidate, [:deployment_identifier] do |_, args|
-    runtime_configuration = configuration.for_overrides(args)
-    deployment_identifier = runtime_configuration.deployment_identifier
-    deployment_configuration = runtime_configuration
-        .for_scope(
-            role: 'website',
-            deployment: deployment_identifier)
+  task :invalidate, [
+      :deployment_group,
+      :deployment_type,
+      :deployment_label
+  ] do |_, args|
+    configuration = configuration
+        .for_scope(args.to_h.merge(role: 'website'))
 
-    region = deployment_configuration.region
-    backend_config = deployment_configuration.backend_config
+    region = configuration.region
+    backend_config = configuration.backend_config
 
-    distribution_id = TerraformOutput.for(
+    distribution_id = RubyTerraform::Output.for(
         name: 'cdn_id',
         source_directory: 'infra/website',
         work_directory: 'build',
