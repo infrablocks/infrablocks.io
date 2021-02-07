@@ -9,16 +9,17 @@ deployment_identifier: "%{deployment_group}-%{deployment_type}-%{deployment_labe
 storage_bucket_name: "%{hiera('development_group')}-%{hiera('component')}-%{hiera('deployment_identifier')}-storage"
 website_bucket_name: "%{hiera('development_group')}-%{hiera('component')}-%{hiera('deployment_identifier')}-content"
 
-zone_domain_name: "infrablocks.io"
-
-dns_zones_state_key: "dns-zones/deployment-state/default.tfstate"
-website_state_key: "website/deployment-state/%{hiera('deployment_identifier')}.tfstate"
-
 content_work_directory: "build/content"
+
+admin_role_name: "cross-account-admin-role"
+atmc_parent_account_id: "879281328474"
+atmc_parent_account_admin_role: "arn:aws:iam::%{hiera('atmc_parent_account_id')}:role/%{hiera('admin_role_name')}"
 
 non_standard_mime_types:
   font/woff2:
     - woff2
+  application/manifest+json:
+    - webmanifest
 
 max_ages:
   image/jpeg: 300

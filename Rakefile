@@ -1,5 +1,6 @@
 require 'confidante'
 require 'rake_terraform'
+require 'ruby_terraform/output'
 require 'aws-sdk'
 require 'securerandom'
 require 'mime/types'
@@ -19,10 +20,7 @@ RakeTerraform.define_installation_tasks(
     version: '0.14.5')
 
 task :default => [
-    :'content:build',
-    :'bootstrap:plan',
-    :'dns_zones:plan',
-    :'website:beta:plan'
+    :'content:build'
 ]
 
 namespace :bootstrap do
@@ -33,7 +31,7 @@ namespace :bootstrap do
           :deployment_type,
           :deployment_label
       ]
-  ) do |t|
+  ) do |t, args|
     configuration = configuration
         .for_scope(args.to_h.merge(role: 'bootstrap'))
 
@@ -75,9 +73,20 @@ namespace :content do
     sh 'npm install'
   end
 
+  desc 'Clean built content'
+  task :clean do
+    rm_rf 'build/content'
+  end
+
   desc 'Build website locally'
-  task :build => [:deps] do
-    sh "jekyll build -s src -d #{configuration.content_work_directory}"
+  task :build, [:environment] => [:clean, :deps] do |_, args|
+    args.with_defaults(environment: "development")
+
+    sh({
+        "JEKYLL_ENV" => args.environment
+    }, "jekyll", "build",
+        "-s", "src",
+        "-d", configuration.content_work_directory)
   end
 
   desc 'Build and serve website on localhost:4000'
@@ -90,7 +99,7 @@ namespace :content do
       :deployment_group,
       :deployment_type,
       :deployment_label
-  ] => [:build] do |_, args|
+  ] do |_, args|
     configuration = configuration
         .for_scope(args.to_h.merge(role: 'website'))
 
@@ -118,11 +127,12 @@ namespace :content do
     region = configuration.region
     backend_config = configuration.backend_config
 
-    distribution_id = RubyTerraform::Output.for(
-        name: 'cdn_id',
-        source_directory: 'infra/website',
-        work_directory: 'build',
-        backend_config: backend_config)
+    distribution_id = JSON.parse(
+        RubyTerraform::Output.for(
+            name: 'cdn_id',
+            source_directory: 'infra/website',
+            work_directory: 'build',
+            backend_config: backend_config))
 
     cloudfront = Aws::CloudFront::Client.new(region: region)
 

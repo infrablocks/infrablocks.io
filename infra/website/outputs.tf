@@ -21,3 +21,11 @@ output "bucket_id" {
 output "bucket_arn" {
   value = aws_s3_bucket.bucket.arn
 }
+
+output "primary_address" {
+  value = var.primary_address
+}
+
+output "other_addresses" {
+  value = var.other_addresses
+}

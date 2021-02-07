@@ -1,8 +1,28 @@
 ---
-website_bucket_secret: "PKB4p3h9K8pdY7hkYa8B09xSwaXIEqIQCgYKiina"
+# General
+parent_role_arn: "%{hiera('atmc_parent_account_admin_role')}"
 
-certificate_domain_name: "infrablocks.io"
+parent_domain_name: "infrablocks.io"
+primary_domain_name: "atmc-production-holmium.%{hiera('parent_domain_name')}"
+certificate_domain_name: "%{hiera('primary_domain_name')}"
 
-addresses:
-  - "%{hiera('zone_domain_name')}"
-  - "www.%{hiera('zone_domain_name')}"
+primary_address: "%{hiera('component')}-%{deployment_label}.%{hiera('primary_domain_name')}"
+other_addresses:
+  - "www.%{hiera('parent_domain_name')}"
+  - "%{hiera('parent_domain_name')}"
+
+# State
+parent_common_state_bucket_name: "atmc-aws-parent-account-atmc-parent-default"
+parent_common_state_key: "common/deployment-state/default.tfstate"
+parent_common_state_bucket_region: "%{hiera('region')}"
+parent_common_state_bucket_is_encrypted: "true"
+
+common_state_bucket_name: "atmc-aws-application-account-atmc-production-holmium"
+common_state_key: "common/deployment-state/default.tfstate"
+common_state_bucket_region: "%{hiera('region')}"
+common_state_bucket_is_encrypted: "true"
+
+website_state_bucket_name: "%{hiera('storage_bucket_name')}"
+website_state_key: "website/deployment-state/default.tfstate"
+website_state_bucket_region: "%{hiera('region')}"
+website_state_bucket_is_encrypted: "true"

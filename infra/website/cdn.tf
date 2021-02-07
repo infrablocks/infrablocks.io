@@ -64,7 +64,7 @@ resource "aws_cloudfront_distribution" "website_cdn" {
     minimum_protocol_version = "TLSv1"
   }
 
-  aliases = var.addresses
+  aliases = concat([var.primary_address], var.other_addresses)
 
   tags = {
     DeploymentIdentifier = var.deployment_identifier
