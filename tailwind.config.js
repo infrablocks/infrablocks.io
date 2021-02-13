@@ -7,5 +7,8 @@ module.exports = {
       '4': '1rem',
       '7': '1.75rem'
     }
-  }
+  },
+  plugins: [
+    require('@tailwindcss/typography')
+  ],
 }

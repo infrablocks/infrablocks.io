@@ -1,7 +1,7 @@
 ---
 ---
-@import "tailwindcss/base";
-@import "tailwindcss/components";
+@tailwind base;
+@tailwind components;
 
 #menu-state:hover ~ #menu-icon > span {
     @apply bg-gray-900;

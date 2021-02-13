@@ -6,7 +6,7 @@
     <meta name="description" content="{{ site.description }}">
     <meta name="author" content="{{ site.author }}">
 
-    <title>{{ site.title }}</title>
+    <title>{{ page.title }}</title>
 
     <link href="/css/infrablocks.css" rel="stylesheet">
 
@@ -19,7 +19,11 @@
     <meta name="theme-color" content="#ffffff">
   </head>
 
-  <body>
+  <body class="flex flex-col min-h-screen">
+    {% include components/size-indicator.html %}
+    {% include header.html %}
     {{ content }}
+    {% include footer.html %}
+    {% include scripts.html %}
   </body>
 </html>

@@ -1,3 +1,7 @@
+---
+layout: docs
+title: "InfraBlocks: Docs: Getting Started"
+---
 # Getting Started
 
 ## Overview
