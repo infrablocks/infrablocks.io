@@ -1,6 +1,8 @@
 ---
 layout: docs
 title: "InfraBlocks: Docs: Getting Started"
+short_title: "Getting Started"
+permalink: /docs/getting-started
 ---
 # Getting Started
 

@@ -1,4 +1,16 @@
-<div>
-  <div>Docs > Introduction</div>
+<div id="breadcrumbs">
+  {% assign crumbs = page.url |  split: '/' %}
+  <a href="/" class="text-gray-600 hover:text-black">Home</a>
+  {% for crumb in crumbs offset: 1 %}
+  {% if forloop.last %}
+  &rangle; {{ page.short_title }}
+  {% else %}
+  &rangle;
+  <a class="text-gray-600 hover:text-black"
+     href="{% assign crumb_limit = forloop.index | plus: 1 %}{% for crumb in crumbs limit: crumb_limit %}{{ crumb | append: '/'  }}{% endfor %}">
+    {{ crumb | replace:'-',' ' | capitalize }}
+  </a>
+  {% endif %}
+  {% endfor %}
   <hr class="py-2 sm:py-3 md:py-4"/>
 </div>
