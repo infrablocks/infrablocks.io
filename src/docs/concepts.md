@@ -2,7 +2,9 @@
 layout: docs
 title: "InfraBlocks: Docs: Concepts"
 short_title: "Concepts"
-permalink: /docs/concepts
+permalink: /docs/concepts/
+redirect_from:
+  - /docs/concepts.html
 ---
 # Concepts
 

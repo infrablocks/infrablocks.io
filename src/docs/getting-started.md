@@ -2,7 +2,9 @@
 layout: docs
 title: "InfraBlocks: Docs: Getting Started"
 short_title: "Getting Started"
-permalink: /docs/getting-started
+permalink: /docs/getting-started/
+redirect_from:
+  - /docs/getting-started.html
 ---
 # Getting Started
 
