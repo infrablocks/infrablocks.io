@@ -146,4 +146,14 @@ namespace :content do
             }
         })
   end
+
+  task :deploy, [
+      :deployment_group,
+      :deployment_type,
+      :deployment_label
+  ] do |_, args|
+    Rake::Task['content:build'].invoke(args.deployment_type)
+    Rake::Task['content:publish'].invoke(*args)
+    Rake::Task['content:invalidate'].invoke(*args)
+  end
 end
