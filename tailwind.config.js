@@ -37,6 +37,12 @@ module.exports = {
             },
             thead: {
               fontWeight: '500'
+            },
+            'code::before': {
+              content: 'none',
+            },
+            'code::after': {
+              content: 'none',
             }
           }
         }
