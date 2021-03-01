@@ -7,3 +7,6 @@ plugins:
   - "jekyll-postcss"
   - "jekyll-purgecss"
   - "jekyll-tidy"
+
+exclude:
+  - "ts"

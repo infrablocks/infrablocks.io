@@ -67,64 +67,144 @@ namespace :website do
   end
 end
 
-namespace :content do
+namespace :dependencies do
   desc 'Fetch dependencies'
-  task :deps do
-    sh 'npm install'
+  task :install do
+    sh('npm', 'install')
   end
+end
 
+namespace :content do
   desc 'Clean built content'
   task :clean do
     rm_rf 'build/content'
+    rm_rf 'src/js'
   end
 
-  desc 'Build website locally'
+  namespace :webpack do
+    desc 'Build webpack content for deployment identifier, by default ' +
+           'ifbk-local-default'
+    task :build, [
+      :deployment_group,
+      :deployment_type,
+      :deployment_label
+    ] => [:'dependencies:install'] do |_, args|
+      args.with_defaults(
+        deployment_group: "ifbk",
+        deployment_type: "local",
+        deployment_label: "default")
+
+      configuration = configuration.for_scope(args.to_h)
+
+      environment = configuration.environment
+      content_work_directory = configuration.content_work_directory
+
+      sh({
+           "NODE_ENV" => environment
+         }, "npx", "webpack",
+         "--config", "config/webpack/webpack.#{environment}.js",
+         "--env", environment,
+         "--env", "CONTENT_WORK_DIRECTORY=#{content_work_directory}",
+         "--progress",
+         "--color")
+    end
+
+    desc 'Run webpack on change for deployment identifier, by default ' +
+           'ifbk-local-default'
+    task :serve, [
+      :deployment_group,
+      :deployment_type,
+      :deployment_label
+    ] => [:'dependencies:install'] do |_, args|
+      args.with_defaults(
+        deployment_group: "ifbk",
+        deployment_type: "local",
+        deployment_label: "default")
+
+      configuration = configuration.for_scope(args.to_h)
+
+      environment = configuration.environment
+      content_work_directory = configuration.content_work_directory
+
+      sh({
+           "NODE_ENV" => environment
+         }, "npx", "webpack",
+         "--config", "config/webpack/webpack.#{environment}.js",
+         "--env", environment,
+         "--env", "CONTENT_WORK_DIRECTORY=#{content_work_directory}",
+         "--progress",
+         "--color",
+         "--watch")
+    end
+  end
+
+  namespace :jekyll do
+    desc 'Build jekyll content for deployment identifier, by default ' +
+           'ifbk-local-default'
+    task :build, [
+      :deployment_group,
+      :deployment_type,
+      :deployment_label
+    ] => [:'dependencies:install'] do |_, args|
+      args.with_defaults(
+        deployment_group: "ifbk",
+        deployment_type: "local",
+        deployment_label: "default")
+
+      configuration = configuration.for_scope(args.to_h)
+
+      environment = configuration.environment
+      content_work_directory = configuration.content_work_directory
+
+      sh({
+           "JEKYLL_ENV" => environment
+         }, "jekyll", "build",
+         "-s", "src",
+         "-c", "src/_config.yaml,src/_config.#{environment}.yaml",
+         "-d", content_work_directory)
+    end
+
+    desc 'Serve jekyll website on localhost:4000 for deployment identifier, ' +
+           'by default ifbk-local-default'
+    task :serve, [
+      :deployment_group,
+      :deployment_type,
+      :deployment_label
+    ] => [:'dependencies:install'] do |_, args|
+      args.with_defaults(
+        deployment_group: "ifbk",
+        deployment_type: "local",
+        deployment_label: "default")
+
+      configuration = configuration.for_scope(args.to_h)
+
+      environment = configuration.environment
+      content_work_directory = configuration.content_work_directory
+
+      sh({
+           "JEKYLL_ENV" => environment
+         }, "jekyll", "serve",
+         "-s", "src",
+         "-c", "src/_config.yaml,src/_config.#{environment}.yaml",
+         "-d", content_work_directory,
+         "-l")
+    end
+  end
+
+  desc 'Build content for deployment identifier, by default ' +
+         'ifbk-local-default'
   task :build, [
     :deployment_group,
     :deployment_type,
     :deployment_label
-  ] => [:clean, :deps] do |_, args|
+  ] => [:clean] do |_, args|
     args.with_defaults(
       deployment_group: "ifbk",
       deployment_type: "local",
       deployment_label: "default")
 
-    configuration = configuration.for_scope(args.to_h)
-
-    environment = configuration.environment
-    content_work_directory = configuration.content_work_directory
-
-    sh({
-      "JEKYLL_ENV" => environment
-    }, "jekyll", "build",
-      "-s", "src",
-      "-c", "src/_config.yaml,src/_config.#{environment}.yaml",
-      "-d", content_work_directory)
-  end
-
-  desc 'Build and serve website on localhost:4000'
-  task :serve, [
-    :deployment_group,
-    :deployment_type,
-    :deployment_label
-  ] => [:deps] do |_, args|
-    args.with_defaults(
-      deployment_group: "ifbk",
-      deployment_type: "local",
-      deployment_label: "default")
-
-    configuration = configuration.for_scope(args.to_h)
-
-    environment = configuration.environment
-    content_work_directory = configuration.content_work_directory
-
-    sh({
-      "JEKYLL_ENV" => environment
-    }, "jekyll", "serve",
-      "-s", "src",
-      "-c", "src/_config.yaml,src/_config.#{environment}.yaml",
-      "-d", content_work_directory,
-      "-l")
+    Rake::Task[:'content:webpack:build'].invoke(*args)
+    Rake::Task[:'content:jekyll:build'].invoke(*args)
   end
 
   desc 'Publish content for deployment identifier'
@@ -149,6 +229,7 @@ namespace :content do
     s3sync.publish_from(content_work_directory)
   end
 
+  desc 'Invalidate content caches for deployment identifier'
   task :invalidate, [
     :deployment_group,
     :deployment_type,
