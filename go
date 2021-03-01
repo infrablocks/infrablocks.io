@@ -3,59 +3,80 @@
 [ -n "$GO_DEBUG" ] && set -x
 set -e
 
-project_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+project_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 verbose="no"
+offline="no"
 skip_checks="no"
-skip_pre_flight="no"
 
 missing_dependency="no"
 
 [ -n "$GO_DEBUG" ] && verbose="yes"
 [ -n "$GO_SKIP_CHECKS" ] && skip_checks="yes"
-[ -n "$GO_SKIP_PRE_FLIGHT" ] && skip_pre_flight="yes"
+[ -n "$GO_OFFLINE" ] && offline="yes"
 
+function loose_version() {
+  local version="$1"
 
-if [[ "$skip_checks" = "no" ]]; then
-    echo "Checking for system dependencies."
-    ruby_version="$(cat "$project_dir"/.ruby-version)"
-    if ! type ruby >/dev/null 2>&1 || ! ruby -v | grep -q "$ruby_version"; then
-        echo "This codebase requires Ruby $ruby_version."
-        missing_dependency="yes"
-    fi
+  IFS="." read -r -a version_parts <<<"$version"
 
-    if ! type bundler >/dev/null 2>&1; then
-        echo "This codebase requires Bundler."
-        missing_dependency="yes"
-    fi
+  echo "${version_parts[0]}.${version_parts[1]}"
+}
 
-    if [[ "$missing_dependency" = "yes" ]]; then
-        echo "Please install missing dependencies to continue."
-        exit 1
-    fi
+ruby_full_version="$(cat "$project_dir"/.ruby-version)"
+ruby_loose_version="$(loose_version "$ruby_full_version")"
+node_full_version="$(cat "$project_dir"/.nvmrc)"
+node_loose_version="$(loose_version "$node_full_version")"
 
-    echo "All system dependencies present. Continuing."
+if [[ "$skip_checks" == "no" ]]; then
+  echo "Checking for system dependencies."
+  if ! type ruby >/dev/null 2>&1 || ! ruby -v | grep -q "$ruby_loose_version"; then
+    echo "This codebase requires Ruby $ruby_loose_version."
+    missing_dependency="yes"
+  fi
+
+  if ! type bundler >/dev/null 2>&1; then
+    echo "This codebase requires Bundler."
+    missing_dependency="yes"
+  fi
+
+  if ! type node >/dev/null 2>&1 || ! node --version | grep -q "$node_loose_version"; then
+    echo "This codebase requires Node $node_loose_version"
+    missing_dependency="yes"
+  fi
+
+  if ! type npm >/dev/null 2>&1; then
+    echo "This codebase requires NPM."
+    missing_dependency="yes"
+  fi
+
+  if [[ "$missing_dependency" == "yes" ]]; then
+    echo "Please install missing dependencies to continue."
+    exit 1
+  fi
+
+  echo "All system dependencies present. Continuing."
 fi
 
-if [[ "$skip_pre_flight" = "no" ]]; then
-    echo "Installing bundler."
-    if [[ "$verbose" = "yes" ]]; then
-        gem install --no-document bundler
-    else
-        gem install --no-document bundler > /dev/null
-    fi
+if [[ "$offline" == "no" ]]; then
+  echo "Installing bundler."
+  if [[ "$verbose" == "yes" ]]; then
+    gem install --no-document bundler
+  else
+    gem install --no-document bundler >/dev/null
+  fi
 
-    echo "Installing ruby dependencies."
-    if [[ "$verbose" = "yes" ]]; then
-        bundle install
-    else
-        bundle install > /dev/null
-    fi
+  echo "Installing ruby dependencies."
+  if [[ "$verbose" == "yes" ]]; then
+    bundle install
+  else
+    bundle install >/dev/null
+  fi
 fi
 
 echo "Starting rake."
-if [[ "$verbose" = "yes" ]]; then
-    time bundle exec rake --verbose "$@"
+if [[ "$verbose" == "yes" ]]; then
+  time bundle exec rake --verbose "$@"
 else
-    time bundle exec rake "$@"
+  time bundle exec rake "$@"
 fi
