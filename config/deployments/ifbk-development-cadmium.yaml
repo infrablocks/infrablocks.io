@@ -1,5 +1,7 @@
 ---
 # General
+environment: "development"
+
 parent_role_arn: "%{hiera('atmc_parent_account_admin_role')}"
 
 parent_domain_name: "infrablocks.io"

@@ -3,9 +3,6 @@ copyright_year: "2021"
 description: "Modular infrastructure components and libraries"
 author: "InfraBlocks Maintainers"
 
-google_analytics:
-  tracking_id: "UA-00000000-0"
-
 plugins:
   - "jekyll-postcss"
   - "jekyll-purgecss"
