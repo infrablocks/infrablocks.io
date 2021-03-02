@@ -1,12 +1,15 @@
 @tailwind base;
 @tailwind components;
-
-#menu-state:hover ~ #menu-icon > span {
-    @apply bg-gray-900;
-}
-
-#menu-state:checked ~ #menu {
-    @apply block;
-}
-
 @tailwind utilities;
+
+@layer components {
+    #menu-state:hover ~ #menu-icon > span {
+        @apply bg-gray-900;
+    }
+
+    #menu-state:checked ~ #menu {
+        @apply block;
+    }
+
+
+}
