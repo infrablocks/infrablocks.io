@@ -4,9 +4,9 @@ description: "Modular infrastructure components and libraries"
 author: "InfraBlocks Maintainers"
 
 plugins:
-  - "jekyll-postcss"
   - "jekyll-purgecss"
   - "jekyll-tidy"
 
 exclude:
   - "ts"
+  - "css"

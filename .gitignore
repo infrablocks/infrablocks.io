@@ -15,7 +15,8 @@
 vendor/
 build/
 dist/
-src/js/
+src/dist/
+src/_data/manifest.yml
 
 # OS
 .DS_Store

@@ -77,8 +77,9 @@ end
 namespace :content do
   desc 'Clean built content'
   task :clean do
+    rm_rf 'src/dist'
+    rm_rf 'src/_data/manifest.yml'
     rm_rf 'build/content'
-    rm_rf 'src/js'
   end
 
   namespace :webpack do
@@ -160,7 +161,7 @@ namespace :content do
            "JEKYLL_ENV" => environment
          }, "jekyll", "build",
          "-s", "src",
-         "-c", "src/_config.yaml,src/_config.#{environment}.yaml",
+         "-c", "config/jekyll/_config.common.yaml,config/jekyll/_config.#{environment}.yaml",
          "-d", content_work_directory)
     end
 
@@ -185,7 +186,7 @@ namespace :content do
            "JEKYLL_ENV" => environment
          }, "jekyll", "serve",
          "-s", "src",
-         "-c", "src/_config.yaml,src/_config.#{environment}.yaml",
+         "-c", "config/jekyll/_config.common.yaml,config/jekyll/_config.#{environment}.yaml",
          "-d", content_work_directory,
          "-l")
     end

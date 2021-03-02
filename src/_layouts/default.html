@@ -9,7 +9,7 @@
 
     <title>{{ page.title }}</title>
 
-    <link href="/css/infrablocks.css" rel="stylesheet">
+    <link href="{{ site.data.manifest['main.css'] }}" rel="stylesheet">
 
     <link rel="apple-touch-icon" sizes="180x180"
           href="/images/apple-touch-icon.png">
@@ -24,7 +24,7 @@
   </head>
 
   <body class="flex flex-col min-h-screen">
-    <script src="/js/index.bundle.js"></script>
+    <script src="{{ site.data.manifest['main.js'] }}"></script>
     {% include components/size-indicator.html %}
     {% include header.html %}
     {{ content }}
