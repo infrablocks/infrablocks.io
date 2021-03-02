@@ -1,6 +1,6 @@
 ---
 # General
-environment: "production" # Use full asset pipeline for development deployment
+environment: "production" # use full asset pipeline for all deployed environments
 
 parent_role_arn: "%{hiera('atmc_parent_account_admin_role')}"
 

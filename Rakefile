@@ -90,10 +90,7 @@ namespace :content do
       :deployment_type,
       :deployment_label
     ] => [:'dependencies:install'] do |_, args|
-      args.with_defaults(
-        deployment_group: "ifbk",
-        deployment_type: "local",
-        deployment_label: "default")
+      default_deployment_identifier(args)
 
       configuration = configuration.for_scope(args.to_h)
 
@@ -117,10 +114,7 @@ namespace :content do
       :deployment_type,
       :deployment_label
     ] => [:'dependencies:install'] do |_, args|
-      args.with_defaults(
-        deployment_group: "ifbk",
-        deployment_type: "local",
-        deployment_label: "default")
+      default_deployment_identifier(args)
 
       configuration = configuration.for_scope(args.to_h)
 
@@ -147,21 +141,19 @@ namespace :content do
       :deployment_type,
       :deployment_label
     ] => [:'dependencies:install'] do |_, args|
-      args.with_defaults(
-        deployment_group: "ifbk",
-        deployment_type: "local",
-        deployment_label: "default")
+      default_deployment_identifier(args)
 
       configuration = configuration.for_scope(args.to_h)
 
       environment = configuration.environment
+      deployment_identifier = configuration.deployment_identifier
       content_work_directory = configuration.content_work_directory
 
       sh({
            "JEKYLL_ENV" => environment
          }, "jekyll", "build",
          "-s", "src",
-         "-c", "config/jekyll/_config.common.yaml,config/jekyll/_config.#{environment}.yaml",
+         "-c", "config/jekyll/defaults.yaml,config/jekyll/#{deployment_identifier}.yaml",
          "-d", content_work_directory)
     end
 
@@ -172,21 +164,19 @@ namespace :content do
       :deployment_type,
       :deployment_label
     ] => [:'dependencies:install'] do |_, args|
-      args.with_defaults(
-        deployment_group: "ifbk",
-        deployment_type: "local",
-        deployment_label: "default")
+      default_deployment_identifier(args)
 
       configuration = configuration.for_scope(args.to_h)
 
       environment = configuration.environment
+      deployment_identifier = configuration.deployment_identifier
       content_work_directory = configuration.content_work_directory
 
       sh({
            "JEKYLL_ENV" => environment
          }, "jekyll", "serve",
          "-s", "src",
-         "-c", "config/jekyll/_config.common.yaml,config/jekyll/_config.#{environment}.yaml",
+         "-c", "config/jekyll/defaults.yaml,config/jekyll/#{deployment_identifier}.yaml",
          "-d", content_work_directory,
          "-l")
     end
@@ -199,10 +189,7 @@ namespace :content do
     :deployment_type,
     :deployment_label
   ] => [:clean] do |_, args|
-    args.with_defaults(
-      deployment_group: "ifbk",
-      deployment_type: "local",
-      deployment_label: "default")
+    default_deployment_identifier(args)
 
     Rake::Task[:'content:webpack:build'].invoke(*args)
     Rake::Task[:'content:jekyll:build'].invoke(*args)
@@ -271,4 +258,11 @@ namespace :content do
     Rake::Task['content:publish'].invoke(*args)
     Rake::Task['content:invalidate'].invoke(*args)
   end
+end
+
+def default_deployment_identifier(args)
+  args.with_defaults(
+    deployment_group: "ifbk",
+    deployment_type: "local",
+    deployment_label: "default")
 end
