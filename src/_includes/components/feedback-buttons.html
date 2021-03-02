@@ -1,0 +1,14 @@
+<div id="feedback-buttons" class="mt-10">
+  <p class="my-6 font-semibold text-lg text-gray-700">Was this information helpful?</p>
+  {% include components/secondary-button.html
+       id="feedback-helpful"
+       class="feedback-button"
+       href="#"
+       description="Yes" %}
+  {% include components/secondary-button.html
+       id="feedback-unhelpful"
+       class="feedback-button"
+       href="#"
+       onclick=no_script
+       description="No" %}
+</div>
