@@ -12,6 +12,7 @@ module.exports = {
       typography: {
         DEFAULT: {
           css: {
+            maxWidth: '80ch',
             h1: {
               fontWeight: '700'
             },
