@@ -11,6 +11,7 @@ certificate_domain_name: "%{hiera('primary_domain_name')}"
 
 primary_address: "%{hiera('component')}-%{deployment_label}.%{hiera('primary_domain_name')}"
 other_addresses:
+  - "live.%{hiera('parent_domain_name')}"
   - "www.%{hiera('parent_domain_name')}"
   - "%{hiera('parent_domain_name')}"
 
