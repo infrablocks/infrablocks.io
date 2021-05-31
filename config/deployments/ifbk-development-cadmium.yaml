@@ -11,7 +11,7 @@ certificate_domain_name: "%{hiera('primary_domain_name')}"
 
 primary_address: "%{hiera('component')}-%{deployment_label}.%{hiera('primary_domain_name')}"
 other_addresses:
-  - "beta.%{hiera('parent_domain_name')}"
+  - "preview.%{hiera('parent_domain_name')}"
 
 # State
 parent_common_state_bucket_name: "atmc-aws-parent-account-atmc-parent-default"
