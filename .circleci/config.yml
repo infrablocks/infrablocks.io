@@ -33,17 +33,17 @@ workflows:
       - prerelease:
           filters:
             branches:
-              only: main
+              only: master
       - hold:
           type: approval
           requires:
             - prerelease
           filters:
             branches:
-              only: main
+              only: master
       - release:
           requires:
             - hold
           filters:
             branches:
-              only: main
+              only: master
