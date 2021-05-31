@@ -13,6 +13,8 @@ content_work_directory: "build/content"
 
 admin_role_name: "cross-account-admin-role"
 atmc_parent_account_id: "879281328474"
+atmc_development_molybdenum_account_id: "554132201092"
+atmc_production_holmium_account_id: "394549888139"
 atmc_parent_account_admin_role: "arn:aws:iam::%{hiera('atmc_parent_account_id')}:role/%{hiera('admin_role_name')}"
 
 non_standard_mime_types:
@@ -20,6 +22,8 @@ non_standard_mime_types:
     - woff2
   application/manifest+json:
     - webmanifest
+  application/json:
+    - map
 
 max_ages:
   image/jpeg: 300

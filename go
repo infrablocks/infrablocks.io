@@ -25,9 +25,11 @@ function loose_version() {
 
 ruby_full_version="$(cat "$project_dir"/.ruby-version)"
 ruby_loose_version="$(loose_version "$ruby_full_version")"
+node_full_version="$(cat "$project_dir"/.nvmrc)"
+node_loose_version="$(loose_version "$node_full_version")"
 
 if [[ "$skip_checks" == "no" ]]; then
-echo "Checking for system dependencies."
+  echo "Checking for system dependencies."
   if ! type ruby >/dev/null 2>&1 || ! ruby -v | grep -q "$ruby_loose_version"; then
     echo "This codebase requires Ruby $ruby_loose_version."
     missing_dependency="yes"
@@ -38,7 +40,17 @@ echo "Checking for system dependencies."
     missing_dependency="yes"
   fi
 
-  if [[ "$missing_dependency" = "yes" ]]; then
+  if ! type node >/dev/null 2>&1 || ! node --version | grep -q "$node_loose_version"; then
+    echo "This codebase requires Node $node_loose_version"
+    missing_dependency="yes"
+  fi
+
+  if ! type npm >/dev/null 2>&1; then
+    echo "This codebase requires NPM."
+    missing_dependency="yes"
+  fi
+
+  if [[ "$missing_dependency" == "yes" ]]; then
     echo "Please install missing dependencies to continue."
     exit 1
   fi

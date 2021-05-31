@@ -1,0 +1,49 @@
+version: 2.1
+orbs:
+  ruby: circleci/ruby@0.1.2 
+
+jobs:
+  prerelease:
+    docker:
+      - image: circleci/ruby:2.7.2-node
+    executor: ruby/default
+    steps:
+        - checkout
+        - run: ./scripts/ci/common/install-git-crypt.sh
+        - run: ./scripts/ci/common/install-gpg-key.sh
+        - run: ./scripts/ci/common/install-aws-cli.sh
+        - run: ./scripts/ci/common/configure-git.sh
+        - run: ./scripts/ci/steps/deploy-preview-site.sh
+  release:
+    docker:
+      - image: circleci/ruby:2.7.2-node
+    executor: ruby/default
+    steps:
+        - checkout
+        - run: ./scripts/ci/common/install-git-crypt.sh
+        - run: ./scripts/ci/common/install-gpg-key.sh
+        - run: ./scripts/ci/common/install-aws-cli.sh
+        - run: ./scripts/ci/common/configure-git.sh
+        - run: ./scripts/ci/steps/deploy-live-site.sh
+
+workflows:
+  version: 2
+  pipeline:
+    jobs:
+      - prerelease:
+          filters:
+            branches:
+              only: main
+      - hold:
+          type: approval
+          requires:
+            - prerelease
+          filters:
+            branches:
+              only: main
+      - release:
+          requires:
+            - hold
+          filters:
+            branches:
+              only: main

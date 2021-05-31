@@ -3,6 +3,7 @@
 environment: "production" # use full asset pipeline for all deployed environments
 
 parent_role_arn: "%{hiera('atmc_parent_account_admin_role')}"
+provisioning_role_arn: "arn:aws:iam::%{hiera('atmc_development_molybdenum_account_id')}:role/%{hiera('admin_role_name')}"
 
 parent_domain_name: "infrablocks.io"
 primary_domain_name: "atmc-development-molybdenum.%{hiera('parent_domain_name')}"

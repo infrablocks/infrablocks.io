@@ -1,6 +1,8 @@
 require 'confidante'
-require 'rake_terraform'
 require 'ruby_terraform/output'
+require 'rake_terraform'
+require 'rake_circle_ci'
+require 'rake_gpg'
 require 'aws-sdk'
 require 'securerandom'
 require 'mime/types'
@@ -17,11 +19,49 @@ end
 
 RakeTerraform.define_installation_tasks(
   path: File.join(Dir.pwd, 'vendor', 'terraform'),
-  version: '0.14.5')
+  version: '0.15.4')
 
 task :default => [
   :'content:build'
 ]
+
+namespace :encryption do
+  namespace :directory do
+    task :ensure do
+      FileUtils.mkdir_p('config/secrets/ci')
+    end
+  end
+
+  namespace :passphrase do
+    task generate: ["directory:ensure"] do
+      File.open('config/secrets/ci/encryption.passphrase', 'w') do |f|
+        f.write(SecureRandom.base64(36))
+      end
+    end
+  end
+end
+
+namespace :keys do
+  namespace :secrets do
+    namespace :gpg do
+      RakeGPG.define_generate_key_task(
+        output_directory: 'config/secrets/ci',
+        name_prefix: 'gpg',
+        owner_name: 'InfraBlocks Maintainers',
+        owner_email: 'maintainers@infrablocks.io',
+        owner_comment: 'infrablocks.io CI Key')
+    end
+
+    task generate: ['gpg:generate']
+  end
+end
+
+namespace :secrets do
+  task regenerate: %w[
+    encryption:passphrase:generate
+    keys:secrets:generate
+  ]
+end
 
 namespace :bootstrap do
   RakeTerraform.define_command_tasks(
@@ -47,6 +87,17 @@ namespace :bootstrap do
   end
 end
 
+namespace :prerequisites do
+  task :ensure, [
+    :deployment_group,
+    :deployment_type,
+    :deployment_label
+  ] do |_, args|
+    Rake::Task['terraform:ensure'].invoke(*args)
+    Rake::Task['aws:session:ensure'].invoke(*args)
+  end
+end
+
 namespace :website do
   RakeTerraform.define_command_tasks(
     configuration_name: 'website',
@@ -54,7 +105,8 @@ namespace :website do
       :deployment_group,
       :deployment_type,
       :deployment_label
-    ]
+    ],
+    ensure_task_name: "prerequisites:ensure"
   ) do |t, args|
     configuration = configuration
       .for_scope(args.to_h.merge(role: 'website'))
@@ -64,6 +116,42 @@ namespace :website do
 
     t.backend_config = configuration.backend_config
     t.vars = configuration.vars
+  end
+end
+
+namespace :aws do
+  namespace :session do
+    desc 'Ensure aws session is available'
+    task :ensure, [
+      :deployment_group,
+      :deployment_type,
+      :deployment_label
+    ] do |_, args|
+      unless ENV['AWS_SESSION_TOKEN']
+        configuration = configuration.for_scope(args.to_h)
+        provisioning_role_arn = configuration.provisioning_role_arn
+        region = configuration.region
+
+        aws_access_key_id = configuration.aws_access_key_id
+        aws_secret_access_key = configuration.aws_secret_access_key
+
+        client = Aws::STS::Client.new(
+          region: region,
+          access_key_id: aws_access_key_id,
+          secret_access_key: aws_secret_access_key
+        )
+        response = client.assume_role(
+          role_arn: provisioning_role_arn,
+          role_session_name: "CI"
+        )
+
+        credentials = response.credentials
+
+        ENV['AWS_ACCESS_KEY_ID'] = credentials.access_key_id
+        ENV['AWS_SECRET_ACCESS_KEY'] = credentials.secret_access_key
+        ENV['AWS_SESSION_TOKEN'] = credentials.session_token
+      end
+    end
   end
 end
 
@@ -200,7 +288,7 @@ namespace :content do
     :deployment_group,
     :deployment_type,
     :deployment_label
-  ] do |_, args|
+  ] => ["aws:session:ensure"] do |_, args|
     configuration = configuration
       .for_scope(args.to_h.merge(role: 'website'))
 
@@ -222,7 +310,7 @@ namespace :content do
     :deployment_group,
     :deployment_type,
     :deployment_label
-  ] do |_, args|
+  ] => ["aws:session:ensure"] do |_, args|
     configuration = configuration
       .for_scope(args.to_h.merge(role: 'website'))
 
@@ -258,6 +346,31 @@ namespace :content do
     Rake::Task['content:publish'].invoke(*args)
     Rake::Task['content:invalidate'].invoke(*args)
   end
+end
+
+RakeCircleCI.define_project_tasks(
+  namespace: :circle_ci,
+  project_slug: 'github/infrablocks/infrablocks.io'
+) do |t|
+  circle_ci_config =
+    YAML.load_file('config/secrets/circle_ci/config.yaml')
+
+  t.api_token = circle_ci_config['circle_ci_api_token']
+  t.environment_variables = {
+    ENCRYPTION_PASSPHRASE:
+      File.read('config/secrets/ci/encryption.passphrase')
+          .chomp
+  }
+  t.checkout_keys = []
+end
+
+namespace :pipeline do
+  desc 'Prepare CircleCI Pipeline'
+  task prepare: %i[
+    circle_ci:project:follow
+    circle_ci:env_vars:ensure
+    circle_ci:checkout_keys:ensure
+  ]
 end
 
 def default_deployment_identifier(args)
