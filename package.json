@@ -10,22 +10,22 @@
   "private": true,
   "devDependencies": {
     "@tailwindcss/typography": "^0.4",
-    "@types/jquery": "^3.5",
-    "autoprefixer": "^10.2",
-    "css-loader": "^5.2",
-    "mini-css-extract-plugin": "^1.6",
-    "postcss": "^8.3",
+    "@types/jquery": "^3.5.9",
+    "autoprefixer": "^10.4.0",
+    "css-loader": "^5.2.7",
+    "mini-css-extract-plugin": "^1.6.2",
+    "postcss": "^8.3.11",
     "postcss-cli": "^8.3",
     "postcss-import": "^14.0",
     "postcss-loader": "^5.3",
     "purgecss": "^4.0",
-    "tailwindcss": "^2.1",
+    "tailwindcss": "^2.2.19",
     "ts-loader": "^8.3",
-    "typescript": "^4.3",
-    "webpack": "^5.38",
-    "webpack-cli": "^4.7",
-    "webpack-manifest-plugin": "^3.1",
-    "webpack-merge": "^5.7"
+    "typescript": "^4.5.2",
+    "webpack": "^5.64.2",
+    "webpack-cli": "^4.9.1",
+    "webpack-manifest-plugin": "^3.2.0",
+    "webpack-merge": "^5.8.0"
   },
   "dependencies": {
     "@types/gtag.js": "0.0.4"
