@@ -5,7 +5,7 @@ orbs:
 jobs:
   prerelease:
     docker:
-      - image: circleci/ruby:2.7.2-node
+      - image: circleci/ruby:3.1.1-node
     executor: ruby/default
     steps:
         - checkout
@@ -16,7 +16,7 @@ jobs:
         - run: ./scripts/ci/steps/deploy-preview-site.sh
   release:
     docker:
-      - image: circleci/ruby:2.7.2-node
+      - image: circleci/ruby:3.1.1-node
     executor: ruby/default
     steps:
         - checkout
