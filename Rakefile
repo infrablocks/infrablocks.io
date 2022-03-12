@@ -19,7 +19,7 @@ end
 
 RakeTerraform.define_installation_tasks(
   path: File.join(Dir.pwd, 'vendor', 'terraform'),
-  version: '0.15.4')
+  version: '1.1.7')
 
 task :default => [
   :'content:build'
