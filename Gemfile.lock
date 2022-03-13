@@ -1306,7 +1306,7 @@ GEM
       excon (~> 0.72)
       rake_factory (~> 0.23)
       sshkey (~> 2.0)
-    rake_dependencies (2.11.0)
+    rake_dependencies (2.13.0)
       hamster (~> 3.0)
       minitar (~> 0.9)
       rake_factory (~> 0.23)
@@ -1366,6 +1366,7 @@ DEPENDENCIES
   mime-types
   rake
   rake_circle_ci
+  rake_dependencies
   rake_gpg
   rake_terraform
   webrick
