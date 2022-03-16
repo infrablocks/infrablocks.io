@@ -4,7 +4,6 @@ description: "Modular infrastructure components and libraries"
 author: "InfraBlocks Maintainers"
 
 plugins:
-  - "jekyll-purgecss"
   - "jekyll-tidy"
 
 css_dir: "dist"

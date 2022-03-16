@@ -12,7 +12,6 @@ gem 'mime-types'
 gem 'webrick'
 
 group :jekyll_plugins do
-  gem 'jekyll-purgecss'
   gem 'jekyll-tidy'
   gem 'jekyll-redirect-from'
 end

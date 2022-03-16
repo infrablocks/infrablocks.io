@@ -26,12 +26,18 @@ non_standard_mime_types:
     - map
 
 max_ages:
+  image/webp: 300
   image/jpeg: 300
   image/png: 300
   image/gif: 300
+  image/vnd.microsoft.icon: 300
   image/svg+xml: 300
   text/html: 0
   text/css: 300
+  text/plain: 300
+  application/json: 0
+  application/manifest+json: 300
   application/javascript: 300
   application/font-woff: 2592000
+  application/xml: 0
   font/woff2: 2592000

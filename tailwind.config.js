@@ -1,5 +1,16 @@
 module.exports = {
-  purge: false,
+  content: [
+    './src/_includes/*.html',
+    './src/_includes/components/*.html',
+    './src/_includes/docs/*.html',
+    './src/_includes/landing/*.html',
+    './src/_layouts/*.html',
+    './src/docs/*.md',
+    './src/_drafts/*.md',
+    './src/ts/*.ts',
+    './src/index.md',
+    './src/404.html'
+  ],
   theme: {
     extend: {
       inset: {

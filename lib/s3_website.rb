@@ -160,6 +160,6 @@ class S3Website
   end
 
   def max_age_for(f)
-    @configuration[:max_ages][mime_type_for(f)]
+    @configuration[:max_ages][mime_type_for(f).to_sym]
   end
 end
