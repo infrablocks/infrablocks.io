@@ -28,6 +28,6 @@
     "webpack-merge": "^5.8.0"
   },
   "dependencies": {
-    "@types/gtag.js": "0.0.4"
+    "@types/gtag.js": "0.0.10"
   }
 }
