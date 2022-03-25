@@ -28,7 +28,7 @@ commands:
           event: pass
           channel: builds
           template: SLACK_SUCCESS_NOTIFICATION
-  configure_for_release:
+  configure_tools:
     steps:
       - run: ./scripts/ci/common/install-node.sh
       - run: ./scripts/ci/common/install-git-crypt.sh
@@ -38,11 +38,19 @@ commands:
       - run: ./scripts/ci/common/configure-git.sh
 
 jobs:
+  build:
+    <<: *defaults
+    steps:
+      - checkout
+      - configure_tools
+      - run: ./scripts/ci/steps/build.sh
+      - notify
+
   prerelease:
     <<: *defaults
     steps:
       - checkout
-      - configure_for_release
+      - configure_tools
       - run: ./scripts/ci/steps/deploy-preview-site.sh
       - notify
 
@@ -50,7 +58,7 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - configure_for_release
+      - configure_tools
       - run: ./scripts/ci/steps/deploy-live-site.sh
       - notify
 
@@ -58,9 +66,14 @@ workflows:
   version: 2
   pipeline:
     jobs:
+      - build:
+          <<: *slack_context
+          <<: *only_main
       - prerelease:
           <<: *slack_context
           <<: *only_main
+          requires:
+            - build
       - slack/on-hold:
           <<: *slack_context
           <<: *only_main

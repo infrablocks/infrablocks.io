@@ -1,17 +1,21 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
-gem 'rake'
-gem 'rake_dependencies'
-gem 'rake_terraform'
-gem 'rake_circle_ci'
-gem 'rake_gpg'
+gem 'aws-sdk'
 gem 'confidante'
 gem 'jekyll'
-gem 'aws-sdk'
 gem 'mime-types'
+gem 'rake'
+gem 'rake_circle_ci'
+gem 'rake_gpg'
+gem 'rake_terraform'
+gem 'rubocop'
+gem 'rubocop-rake'
+gem 'rubocop-rspec'
 gem 'webrick'
 
 group :jekyll_plugins do
-  gem 'jekyll-tidy'
   gem 'jekyll-redirect-from'
+  gem 'jekyll-tidy'
 end
