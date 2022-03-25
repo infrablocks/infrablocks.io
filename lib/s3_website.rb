@@ -107,7 +107,7 @@ class S3Website
     bucket = @s3.bucket(@configuration[:bucket])
     add_files(bucket, directory, added)
     update_files(bucket, directory, updated)
-    remove_file(bucket, removed)
+    remove_files(bucket, removed)
   end
 
   private
