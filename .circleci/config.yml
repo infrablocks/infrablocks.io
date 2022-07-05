@@ -20,14 +20,34 @@ only_main: &only_main
 commands:
   notify:
     steps:
-      - slack/notify:
-          event: fail
-          channel: dev
-          template: SLACK_FAILURE_NOTIFICATION
-      - slack/notify:
-          event: pass
-          channel: builds
-          template: SLACK_SUCCESS_NOTIFICATION
+      - when:
+          condition:
+            matches:
+              pattern: "^dependabot.*"
+              value: << pipeline.git.branch >>
+          steps:
+            - slack/notify:
+                event: fail
+                channel: builds-dependabot
+                template: SLACK_FAILURE_NOTIFICATION
+            - slack/notify:
+                event: pass
+                channel: builds-dependabot
+                template: SLACK_SUCCESS_NOTIFICATION
+      - when:
+          condition:
+            matches:
+              pattern: "^(?!dependabot).*"
+              value: << pipeline.git.branch >>
+          steps:
+            - slack/notify:
+                event: fail
+                channel: dev
+                template: SLACK_FAILURE_NOTIFICATION
+            - slack/notify:
+                event: pass
+                channel: builds
+                template: SLACK_SUCCESS_NOTIFICATION
   configure_tools:
     steps:
       - run: ./scripts/ci/common/install-node.sh
