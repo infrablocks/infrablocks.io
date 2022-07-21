@@ -4,7 +4,7 @@
 set -e
 set -o pipefail
 
-NODE_VERSION=14.19.0
+NODE_VERSION=16.16.0
 
 ARCH=
 dpkgArch="$(dpkg --print-architecture)"
