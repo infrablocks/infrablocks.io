@@ -78,7 +78,7 @@ namespace :build do
     task check: [:rubocop]
 
     desc 'Attempt to automatically fix issues with the build code'
-    task fix: [:'rubocop:auto_correct']
+    task fix: [:'rubocop:autocorrect']
   end
 end
 
@@ -265,7 +265,7 @@ namespace :content do
            'JEKYLL_ENV' => environment
          }, 'jekyll', 'build',
          '-s', 'src',
-         '-c', 'config/jekyll/defaults.yaml,'\
+         '-c', 'config/jekyll/defaults.yaml,' \
                "config/jekyll/#{deployment_identifier}.yaml",
          '-d', content_work_directory)
     end
@@ -289,7 +289,7 @@ namespace :content do
            'JEKYLL_ENV' => environment
          }, 'jekyll', 'serve',
          '-s', 'src',
-         '-c', 'config/jekyll/defaults.yaml,'\
+         '-c', 'config/jekyll/defaults.yaml,' \
                "config/jekyll/#{deployment_identifier}.yaml",
          '-d', content_work_directory,
          '-l')
