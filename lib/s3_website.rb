@@ -4,7 +4,6 @@ require 'pathname'
 require 'forwardable'
 require 'mime/types'
 require 'digest/md5'
-require 'pp'
 
 class S3Website
   class Item
