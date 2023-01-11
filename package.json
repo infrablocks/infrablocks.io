@@ -9,7 +9,7 @@
   "version": "0.0.1",
   "private": true,
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.2",
+    "@tailwindcss/typography": "^0.5.9",
     "@types/jquery": "^3.5.14",
     "autoprefixer": "^10.4.7",
     "css-loader": "^6.7.1",
