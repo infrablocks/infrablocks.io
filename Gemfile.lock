@@ -1522,7 +1522,7 @@ GEM
     unicode-display_width (2.3.0)
     vault (0.17.0)
       aws-sigv4
-    webrick (1.7.0)
+    webrick (1.8.1)
 
 PLATFORMS
   ruby
