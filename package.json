@@ -13,7 +13,7 @@
     "@types/jquery": "^3.5.14",
     "autoprefixer": "^10.4.7",
     "css-loader": "^6.7.1",
-    "mini-css-extract-plugin": "^2.6.0",
+    "mini-css-extract-plugin": "^2.7.3",
     "postcss": "^8.4.12",
     "postcss-cli": "^10.1.0",
     "postcss-import": "^15.1.0",
