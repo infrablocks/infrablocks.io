@@ -10,7 +10,7 @@
   "private": true,
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.2",
-    "@types/jquery": "^3.5.14",
+    "@types/jquery": "^3.5.26",
     "autoprefixer": "^10.4.7",
     "css-loader": "^6.7.1",
     "mini-css-extract-plugin": "^2.6.0",
