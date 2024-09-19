@@ -1492,7 +1492,7 @@ GEM
     git (1.18.0)
       addressable (~> 2.8)
       rchardet (~> 1.8)
-    google-protobuf (3.24.4)
+    google-protobuf (3.25.5)
     hamster (3.0.0)
       concurrent-ruby (~> 1.0)
     hiera (3.12.0)
